@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Email Sender</title>
+</head>
+
+<body>
+    <h2>Send Email via Serverless API</h2>
+    <form id="emailForm">
+        <label>Email:</label><br>
+        <input type="email" id="receiver_email" required><br>
+        <label>Subject:</label><br>
+        <input type="text" id="subject" required><br>
+        <label>Message:</label><br>
+        <textarea id="body_text" required></textarea><br><br>
+        <button type="submit">Send</button>
+    </form>
+    <div id="response"></div>
+
+    <script>
+        document.getElementById("emailForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
+            const response = await fetch("http://localhost:3000/dev/send-email", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    receiver_email: document.getElementById("receiver_email").value,
+                    subject: document.getElementById("subject").value,
+                    body_text: document.getElementById("body_text").value
+                })
+            });
+
+            const result = await response.json();
+            document.getElementById("response").innerText = JSON.stringify(result, null, 2);
+        });
+    </script>
+</body>
+
+</html>
